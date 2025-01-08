@@ -11,3 +11,12 @@ npm install --save @sanity/image-url
 inserir essa instalação no client
 
 import { createClient } from "next-sanity";
+
+- inserir typografy linkedin
+
+- 
+
+
+apos concluir todo conteudo utilizar 
+
+.vercelignore - sanity

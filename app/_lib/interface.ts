@@ -5,9 +5,11 @@ export interface simpleBlogCard {
   titleImage: unknown;
 }
 
+import { TypedObject } from "@portabletext/types";
+
 export interface fullBlog {
   currentSlug: string;
   title: string;
-  content: string;
-  titleImage: unknown;
+  content: TypedObject[]; // Aqui é importante
+  titleImage: string;
 }
