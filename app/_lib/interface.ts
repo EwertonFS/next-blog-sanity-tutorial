@@ -5,11 +5,9 @@ export interface simpleBlogCard {
   titleImage: unknown;
 }
 
-import { TypedObject } from "@portabletext/types";
-
 export interface fullBlog {
   currentSlug: string;
   title: string;
-  content: TypedObject[]; // Aqui é importante
-  titleImage: string;
+  content: any; // Ajuste o tipo conforme necessário
+  titleImage: any; // Ajuste o tipo conforme necessário
 }

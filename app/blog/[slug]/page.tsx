@@ -1,4 +1,3 @@
-// Importa componentes e utilitários necessários
 import Navbar from "@/app/_components/Navbar";
 import { fullBlog } from "@/app/_lib/interface";
 import { client, urlFor } from "@/app/_lib/sanity";
@@ -11,29 +10,19 @@ async function getData(slug: string) {
     title,
     content,
     titleImage
-  }[0]`; // Query no Sanity para obter o conteúdo do blog com base no slug
+  }[0]`;
 
   const data = await client.fetch(query);
   return data;
 }
 
-// Função para gerar parâmetros estáticos para as rotas dinâmicas (Next.js)
-export async function generateStaticParams() {
-  const query = `*[_type == 'blog'] { 'slug': slug.current }`; // Busca todos os slugs dos blogs
-  const slugs = await client.fetch<{ slug: string }[]>(query); // Obtém a lista de slugs
-
-  return slugs.map((slug) => ({
-    params: { slug: slug.slug }, // Retorna os parâmetros estáticos para cada slug
-  }));
-}
-
-// Componente do artigo do blog, que recebe os parâmetros da rota
-const BlogArticle = async ({ params }: { params: { slug: string } }) => {
-  const data: fullBlog = await getData(params.slug);
+async function BlogArticle({ params }: { params: Promise<{ slug: string }> }) {
+  const data: fullBlog = await getData((await params).slug);
+  console.log(data);
 
   return (
     <div className="mt-8 mx-auto px-4 max-w-2xl py-5">
-      <h1>
+      <header>
         <Navbar />
         <span className="block text-base text-center text-primary font-semibold tracking-wide uppercase mt-8">
           Ewerton Francis-Blog
@@ -41,10 +30,10 @@ const BlogArticle = async ({ params }: { params: { slug: string } }) => {
         <span className="mt-2 block text-3xl text-center leading-8 font-semibold tracking-tighter sm:text-4xl">
           {data.title}
         </span>
-      </h1>
+      </header>
 
       <Image
-        src={urlFor(data.titleImage).url()} // Gera a URL da imagem do título
+        src={urlFor(data.titleImage).url()}
         width={800}
         height={400}
         alt="title-image"
@@ -53,10 +42,10 @@ const BlogArticle = async ({ params }: { params: { slug: string } }) => {
       />
 
       <div className="mt-16 prose prose-blue prose-lg dark:prose-invert prose-li:marker:text-primary prose-a:text-primary">
-        <PortableText value={data.content} /> {/* Conteúdo do artigo */}
+        <PortableText value={data.content} />
       </div>
     </div>
   );
-};
+}
 
 export default BlogArticle;
