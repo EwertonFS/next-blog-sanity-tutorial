@@ -1,1 +1,0 @@
-# next-blog-sanity-tutorial
